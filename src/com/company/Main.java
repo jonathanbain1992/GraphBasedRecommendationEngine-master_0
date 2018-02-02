@@ -25,11 +25,18 @@ public class Main {
           //  uni.printAllGraphMatrices();
        // }
 
-        for(Universe uni:universes){
+      //  for(Universe uni:universes){
            // uni.printAllVectors();
-            uni.printAllGraphAverages();
+         //   uni.printAllGraphAverages();
+       // }
+        for(Universe uni : universes){
+            int[][] vectors = uni.getAllVectors();
+           // for(int i=0; i< vectors.length; i++){
+               // System.out.println(Arrays.toString(vectors[i]));
+            System.out.println(Arrays.toString(uni.getVectorAverages(uni.getAllVectors())));
+            }
         }
-    }
+
 
 
 
