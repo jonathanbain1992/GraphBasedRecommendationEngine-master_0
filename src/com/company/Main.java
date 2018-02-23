@@ -15,30 +15,23 @@ public class Main {
         System.out.println("Please enter a number of nodes within each graph.");
         int numNodes = sc.nextInt();
 
+        //outermost data structure
         ArrayList<Universe> universes = new ArrayList<>();
 
         for (int i = 0; i < numUniverses; i++) {
             universes.add(initUniverse(numGraphs, numNodes));
         }
 
-      //  for (Universe uni: universes){
-          //  uni.printAllGraphMatrices();
-       // }
+        //output logic for myself while in development.
 
-      //  for(Universe uni:universes){
-           // uni.printAllVectors();
-         //   uni.printAllGraphAverages();
-       // }
-        for(Universe uni : universes){
-            int[][] vectors = uni.getAllVectors();
-           // for(int i=0; i< vectors.length; i++){
-               // System.out.println(Arrays.toString(vectors[i]));
-            System.out.println(Arrays.toString(uni.getVectorAverages(uni.getAllVectors())));
+        for(Universe u: universes){
+            for(Graph g : u.globalNeighbourhood){
+                System.out.println(g.validVectors((float)0.60));
             }
         }
 
-
-
+        // /output logic.
+    }
 
     public static Graph initGraph(int numNodes) {
         Graph g = new Graph(numNodes);

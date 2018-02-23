@@ -3,8 +3,6 @@ package com.company;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-
 public class Vertex {
 
     public ArrayList<Edge> neighbourhood;
@@ -13,9 +11,8 @@ public class Vertex {
     public int id;
 
     public Vertex(){
-        this.neighbourhood = new ArrayList<Edge>();
+        this.neighbourhood = new ArrayList<>();
         id = nVertexes++;
-
     }
 
     //if we want to give it some neighbours by default for whatever reason.
@@ -27,12 +24,7 @@ public class Vertex {
         return this.hashCode();
     }
 
-
-
     //edge contains vertex object which is identified by its hashcode.
-
-
-
     public boolean containsNeighbour(Vertex v){
         for(Edge e : neighbourhood){
             if(e.getNeighbour().getHashCode() == v.getHashCode()) {
@@ -49,6 +41,7 @@ public class Vertex {
      * @return edgeWeights A map of neighbour id to the edge's weight.
      */
     public HashMap<Integer, Integer> getEdgeWeights(){
+
         HashMap<Integer, Integer> edgeWeights = new HashMap<>();
 
         for (Edge e: neighbourhood){

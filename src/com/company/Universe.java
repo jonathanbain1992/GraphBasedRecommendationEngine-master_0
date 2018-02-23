@@ -28,32 +28,34 @@ public class Universe {
         for (int i=0; i<globalNeighbourhood.size(); i++){
             vectors[i] = globalNeighbourhood.get(i).generateVector();
         }
+
         return vectors;
     }
 
     public float[] getVectorAverages(int[][] vectors){
+
         float size = globalNeighbourhood.size(); //stored here to save on repeated calls, should be size of each vector.
         float[] avg = new float[globalNeighbourhood.get(0).jumpValue]; //should be the size of each vector
+
         for(int dimension=0; dimension<globalNeighbourhood.get(0).jumpValue; dimension++){ //coupling between dimension and size
             for(int vector=0; vector<size; vector++){
                 avg[dimension] += vectors[vector][dimension];
             }
             avg[dimension]/=size; //take total, convert to avg.
         }
+
         return avg;
     }
 
     public void printAllGraphAverages(){
+
         for( Graph g : globalNeighbourhood){
             System.out.println(               "*****GRAPH AVERAGE*****");
-          //  System.out.println("              "+g.graphAverage());
             System.out.println(Arrays.toString(g.averageOfGraphForAllDimensions()));
             System.out.println(               "***********************");
         }
+
     }
-
-
-
 
     public boolean addGraph(Graph g) {
         return globalNeighbourhood.add(g);

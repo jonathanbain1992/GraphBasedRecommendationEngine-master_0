@@ -1,6 +1,5 @@
 package com.company;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,37 +25,60 @@ public class Graph {
     public float averageOfVectorsAtDimensionI(int i){
         // scan through neighbourhood, add up total at index i, at end average it out and int[] at i = avg at that dimention.
         //NB : final value in int[] is the global avg.
-        System.out.println("Vector Length:"+vector.length);
-        System.out.println("Jump Value:"+jumpValue);
-        System.out.println("Current Dimension:"+i);
+       // System.out.println("Vector Length:"+vector.length);
+       // System.out.println("Jump Value:"+jumpValue);
+       // System.out.println("Current Dimension:"+i);
 
         float runningTotal = 0;
         for(int j = i; j<vector.length; j+= jumpValue ){
-            System.out.println("Current Iteration Jump Start Index: "+j);
-
             runningTotal += vector[j];
-            System.out.println("Vector at dimension J value: "+vector[j]);
-            System.out.println("Running Total:" +runningTotal);
         }
-        System.out.println("END OF CYCLE: Running Total Was:"+runningTotal+". Running Total / Jump Value Was : "+ runningTotal/jumpValue);
-
         return runningTotal/(float)jumpValue;
     }
 
+    public ArrayList<Float> validVectors(){
+            float average = 0;
+            for(float f : averageOfGraphForAllDimensions()){
+                average += f;
+            }
+            average /= averageOfGraphForAllDimensions().length;
+
+            ArrayList<Float> validVectors = new ArrayList<>();
+            for (float f: averageOfGraphForAllDimensions()){
+                if(f >= average){
+                    validVectors.add(new Float(f));
+                }
+            }
+        return validVectors;
+    }
+
+    public ArrayList<Float> validVectors(float arbValue){
+        ArrayList<Float> validVectors = new ArrayList<>();
+            for (float f: averageOfGraphForAllDimensions()){
+                if(f >= arbValue){
+                    validVectors.add(new Float(f));
+                }
+            }
+        return validVectors;
+    }
+
+
+
+
     public float[] averageOfGraphForAllDimensions(){
         float[] averages = new float[jumpValue];
-        for(int i=0; i<jumpValue; i++){
-            averages[i] = averageOfVectorsAtDimensionI(i);
-        }
+            for(int i=0; i<jumpValue; i++){
+                averages[i] = averageOfVectorsAtDimensionI(i);
+            }
         return averages;
     }
 
     public float graphAverage(){
         float graphAverageSum =0;
         float[] averages = averageOfGraphForAllDimensions();
-        for(float i: averages){
-            graphAverageSum += i;
-        }
+            for(float i: averages){
+                graphAverageSum += i;
+            }
         return graphAverageSum / jumpValue;
     }
 
@@ -72,22 +94,18 @@ public class Graph {
 
     public boolean populateGraph(int size) {
         long time = System.nanoTime();
-        for (int i = 0; i < size; i++) {
-            globalNeighbourhood.add(new Vertex());
-        }
-       // System.out.println("Graph Population Cost: "+(System.nanoTime()-time));
+            for (int i = 0; i < size; i++) {
+                globalNeighbourhood.add(new Vertex());
+            }
         return true;
     }
 
     public boolean setNeighbourhood(double probability) {
-
-        long time = System.nanoTime();
         for (Vertex v : globalNeighbourhood) {
             for (Vertex v2 : globalNeighbourhood) {
                 setNeighbourRelations(probability, v, v2);
             }
         }
-      //  System.out.println("Generating Neighbourhood Of Entire Graph Cost: "+ (System.nanoTime()-time));
         return true;
     }
 
@@ -105,11 +123,6 @@ public class Graph {
         return false;
     }
 
-    public boolean clearNeighbourhood() {
-        globalNeighbourhood.clear();
-        return true;
-    }
-
     public int getNeighbourhoodSize() {
         return globalNeighbourhood.size();
     }
@@ -118,13 +131,10 @@ public class Graph {
         return this.globalNeighbourhood;
     }
 
-
-
     public int[][] generateMatrix() {
         long time = System.nanoTime();
         int size = getNeighbourhoodSize();
         int[][] returnArr = new int[size][size];
-
         int i = 0;
         for (Vertex v1 : globalNeighbourhood) {
             for (Vertex v2 : globalNeighbourhood) {
@@ -134,13 +144,8 @@ public class Graph {
                 i++;
             }
         }
-      //  System.out.println("Generating Matrix Version Cost: "+(System.nanoTime()-time));
-
         return returnArr;
-
     }
-
-
 
     public int calculateDiagonal(int index, int size){
         int i = index/size;
@@ -168,43 +173,30 @@ public class Graph {
         long time = System.nanoTime();
         int dimension = globalNeighbourhood.size();
         int[][] flipped = new int[dimension][dimension];
-
         for (int i = 0; i < dimension; i++) {
             for (int j = 0; j < dimension; j++) {
                 flipped[i][j] = matrix[j][i];
             }
         }
-       // System.out.println("Matrix Transposing Cost: "+(System.nanoTime()-time));
         return flipped;
     }
-
-    //verification that the output is consistently formatted when rendered as matrix
-
 
     public boolean isMatrixDiagonal(int[][] matrix) throws Exception {
 
         long time = System.nanoTime();
-
         for (int i = 0; i < globalNeighbourhood.size(); i++) {
             for (int j = 0; j < globalNeighbourhood.size(); j++) {
-
                 if (matrix[i][j] != transpose(matrix)[i][j]) {
                     throw new Exception("Matrix was invalid when tested for its diagonal");
                 }
             }
         }
-
         System.out.println("Checking Matrix Symmetric Cost: "+(System.nanoTime()-time));
-
         return true;
-
     }
 
-
     public void printMatrix() {
-
         try {
-            long time = System.nanoTime();
             int[][] matrix = generateMatrix();
             for (int i = 0; i < matrix.length; i++) {
                 for (int j = 0; j < matrix.length; j++) {
@@ -224,14 +216,13 @@ public class Graph {
                 }
                 System.out.print("\n");
             }
-         //   System.out.println("Printing Matrix To System Out Cost: "+(System.nanoTime()-time));
             isMatrixDiagonal(matrix);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("Stack traceback:");
             System.out.println(e.getStackTrace());
         }
     }
-
 }
 
